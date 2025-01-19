@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Crawl Request</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 1.5em;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        label, input, button, select, textarea {
+            display: block;
+            width: 100%;
+            margin-bottom: 1em;
+        }
+        input, select, textarea {
+            padding: 0.5em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 0.75em;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #message {
+            margin-top: 1em;
+            color: green;
+            font-weight: bold;
+        }
+        .disclaimer {
+            margin-top: 1em;
+            font-size: 0.9em;
+            color: #555;
+            text-align: center;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Request a Crawl</h1>
+    <form id="crawlForm">
+        <!-- Domain Name -->
+        <label for="domain">Enter Domain Name:</label>
+        <input type="text" id="domain" name="domain" placeholder="example.com" required>
+
+        <!-- Authorization Cookies -->
+        <label for="authCookies">Authorization Cookies (optional):</label>
+        <textarea id="authCookies" name="authCookies" rows="4" placeholder="Paste cookies here"></textarea>
+
+        <!-- Crawl Depth -->
+        <label for="depth">Select Crawl Depth:</label>
+        <select id="depth" name="depth" required>
+            <option value="1">1 (Homepage only)</option>
+            <option value="2">2 (Homepage + 1 level deep)</option>
+            <option value="3">3 (Homepage + 2 levels deep)</option>
+            <option value="full">Full Crawl</option>
+        </select>
+
+        <!-- User-Agent -->
+        <label for="userAgent">Select User-Agent:</label>
+        <select id="userAgent" name="userAgent" required>
+            <option value="default">Default (Screaming Frog)</option>
+            <option value="googlebot">Googlebot</option>
+            <option value="bingbot">Bingbot</option>
+            <option value="custom">Custom</option>
+        </select>
+        <input type="text" id="customUserAgent" name="customUserAgent" placeholder="Enter custom User-Agent" style="display: none;">
+
+        <!-- Start Time -->
+        <label for="startTime">Preferred Start Time:</label>
+        <input type="datetime-local" id="startTime" name="startTime" required>
+
+        <!-- Email Address -->
+        <label for="email">Notification Email:</label>
+        <input type="email" id="email" name="email" placeholder="yourname@example.com" required>
+
+        <button type="submit">Submit</button>
+    </form>
+    <p id="message" hidden>The crawl will be ready in 24h</p>
+
+    <!-- Disclaimer -->
+    <p class="disclaimer">
+        Note: This form is for demo purposes only and does not execute any actual crawl requests. Ensure sensitive information is not submitted.
+    </p>
+
+    <script>
+        const userAgentSelect = document.getElementById('userAgent');
+        const customUserAgentInput = document.getElementById('customUserAgent');
+
+        userAgentSelect.addEventListener('change', () => {
+            if (userAgentSelect.value === 'custom') {
+                customUserAgentInput.style.display = 'block';
+                customUserAgentInput.required = true;
+            } else {
+                customUserAgentInput.style.display = 'none';
+                customUserAgentInput.required = false;
+            }
+        });
+
+        document.getElementById('crawlForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const domain = document.getElementById('domain').value;
+            const email = document.getElementById('email').value;
+
+            if (domain.trim() === '' || email.trim() === '') {
+                alert('Please fill out all required fields.');
+                return;
+            }
+            const message = document.getElementById('message');
+            message.hidden = false; // Show confirmation message
+        });
+    </script>
+</body>
+</html>
